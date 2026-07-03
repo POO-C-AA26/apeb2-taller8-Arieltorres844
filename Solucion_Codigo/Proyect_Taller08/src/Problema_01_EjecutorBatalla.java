@@ -26,6 +26,8 @@ según la región
 @autor: Ariel Torres
 @version: 1.0
  */
+import java.util.Random;
+
 abstract class Personaje {
 
     public int vida, experiencia, batallasGanadas;
@@ -40,10 +42,11 @@ abstract class Personaje {
 
     @Override
     public String toString() {
-        return "Personaje{" + "vida=" + vida + ", experiencia=" + experiencia + ", batallasGanadas=" + batallasGanadas + '}';
+        return "vida=" + vida
+                + ", experiencia=" + experiencia
+                + ", batallasGanadas=" + batallasGanadas;
     }
 }
-
 class Guerrero extends Personaje {
 
     public int fuerza;
@@ -53,39 +56,57 @@ class Guerrero extends Personaje {
         this.fuerza = fuerza;
     }
 
+    @Override
     public boolean ataque(Personaje personaje) {
+
         if (this.vida <= 0 || personaje.vida <= 0) {
             return false;
         }
 
-        this.experiencia++;
+        experiencia++;
         personaje.experiencia++;
 
         Random ale = new Random();
-        boolean pelea = ale.nextBoolean();
 
-        if (pelea) {
-            this.batallasGanadas++;
-            personaje.vida--;
+        boolean gana = ale.nextBoolean();
+
+        if (gana) {
+            personaje.vida -= fuerza;
+            batallasGanadas++;
         } else {
-            this.vida--;
+            vida--;
             personaje.batallasGanadas++;
         }
 
-        return pelea;
+        if (personaje.vida < 0) {
+            personaje.vida = 0;
+        }
+
+        return gana;
     }
 
+    @Override
     public boolean defensa(Personaje personaje) {
+
+        Random ale = new Random();
+
+        if (ale.nextBoolean()) {
+            vida++;
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public String toString() {
-        return "Guerrero{" + "fuerza=" + fuerza + '}' + super.toString();
+        return "Guerrero{"
+                + "fuerza=" + fuerza + ", "
+                + super.toString()
+                + "}";
     }
 
 }
-
 class Mago extends Personaje {
 
     public String hechizos[];
@@ -95,64 +116,186 @@ class Mago extends Personaje {
         this.hechizos = hechizos;
     }
 
+    @Override
     public boolean ataque(Personaje personaje) {
-        return false;
+
+        if (vida <= 0 || personaje.vida <= 0) {
+            return false;
+        }
+
+        experiencia++;
+        personaje.experiencia++;
+
+        Random ale = new Random();
+
+        boolean gana = ale.nextInt(100) < 70; //70% de éxito
+
+        if (gana) {
+            personaje.vida -= 2;
+            batallasGanadas++;
+        } else {
+            vida--;
+            personaje.batallasGanadas++;
+        }
+
+        if (personaje.vida < 0) {
+            personaje.vida = 0;
+        }
+
+        return gana;
     }
 
+    @Override
     public boolean defensa(Personaje personaje) {
+
+        Random ale = new Random();
+
+        if (ale.nextBoolean()) {
+            vida += 2;
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public String toString() {
-        return "Mago{" + "hechizos=" + hechizos + '}' + super.toString();
+        return "Mago{"
+                + "hechizos=" + hechizos.length
+                + ", " + super.toString()
+                + "}";
     }
 
 }
-
-class arquero extends Personaje {
+class Arquero extends Personaje {
 
     public int precision;
 
-    public arquero(int precision, int vida) {
+    public Arquero(int precision, int vida) {
         super(vida);
         this.precision = precision;
     }
 
+    @Override
     public boolean ataque(Personaje personaje) {
-        return false;
+
+        if (vida <= 0 || personaje.vida <= 0) {
+            return false;
+        }
+
+        experiencia++;
+        personaje.experiencia++;
+
+        Random ale = new Random();
+
+        boolean gana = ale.nextInt(10) < precision;
+
+        if (gana) {
+            personaje.vida -= precision;
+            batallasGanadas++;
+        } else {
+            vida--;
+            personaje.batallasGanadas++;
+        }
+
+        if (personaje.vida < 0) {
+            personaje.vida = 0;
+        }
+
+        return gana;
     }
 
+    @Override
     public boolean defensa(Personaje personaje) {
-        return false;
+
+        Random ale = new Random();
+
+        return ale.nextBoolean();
     }
 
     @Override
     public String toString() {
-        return "arquero{" + "precision=" + precision + '}' + super.toString();
+        return "Arquero{"
+                + "precision=" + precision + ", "
+                + super.toString()
+                + "}";
     }
-}
 
+}
 public class Problema_01_EjecutorBatalla {
 
     public static void main(String[] args) {
-        String hechizos[] = {"abracadabra", "poderesMagicosFuerza"};
-        Personaje guerrero = new Guerrero(5, 2);
-        Personaje mago = new Mago(hechizos, 1);
-        Personaje arquero = new arquero(4, 3);
-        System.out.println("result. ataque al gerrero:" + guerrero.ataque(arquero));
-        guerrero.ataque(arquero);
-        guerrero.ataque(arquero);
-        guerrero.ataque(arquero);
+
+        String hechizos[] = {
+            "Abracadabra",
+            "Bola de Fuego",
+            "Rayo"
+        };
+
+        Personaje guerrero = new Guerrero(5, 10);
+        Personaje mago = new Mago(hechizos, 8);
+        Personaje arquero = new Arquero(7, 9);
+
+        System.out.println("=== Estado Inicial ===");
+        System.out.println(guerrero);
+        System.out.println(mago);
+        System.out.println(arquero);
+
+        System.out.println();
+
+        System.out.println("Guerrero ataca al Arquero");
+        System.out.println("Resultado: " + guerrero.ataque(arquero));
+
+        System.out.println();
+
+        System.out.println("Mago ataca al Guerrero");
+        System.out.println("Resultado: " + mago.ataque(guerrero));
+
+        System.out.println();
+
+        System.out.println("Arquero ataca al Mago");
+        System.out.println("Resultado: " + arquero.ataque(mago));
+
+        System.out.println();
+
+        System.out.println("=== Estado Final ===");
+        System.out.println(guerrero);
+        System.out.println(mago);
+        System.out.println(arquero);
+
         if (guerrero.vida <= 0) {
-            System.out.println("El guerrero no puede pelear mas, no tiene vida.");
+            System.out.println("El Guerrero ha sido derrotado.");
+        }
+
+        if (mago.vida <= 0) {
+            System.out.println("El Mago ha sido derrotado.");
         }
 
         if (arquero.vida <= 0) {
-            System.out.println("El personaje rival no puede pelear mas, no tiene vida.");
+            System.out.println("El Arquero ha sido derrotado.");
         }
+
     }
+
 }
 /*
+run:
+=== Estado Inicial ===
+Guerrero{fuerza=5, vida=10, experiencia=0, batallasGanadas=0}
+Mago{hechizos=3, vida=8, experiencia=0, batallasGanadas=0}
+Arquero{precision=7, vida=9, experiencia=0, batallasGanadas=0}
 
+Guerrero ataca al Arquero
+Resultado: false
+
+Mago ataca al Guerrero
+Resultado: true
+
+Arquero ataca al Mago
+Resultado: true
+
+=== Estado Final ===
+Guerrero{fuerza=5, vida=7, experiencia=2, batallasGanadas=0}
+Mago{hechizos=3, vida=1, experiencia=2, batallasGanadas=1}
+Arquero{precision=7, vida=9, experiencia=2, batallasGanadas=2}
  */
