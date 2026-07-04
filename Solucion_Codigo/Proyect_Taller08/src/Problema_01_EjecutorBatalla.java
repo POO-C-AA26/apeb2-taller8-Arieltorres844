@@ -2,27 +2,24 @@
 import java.util.Random;
 
 /*
-Problema01:Una red de monitoreo ambiental tiene como objetivo registrar, 
-analizar y reportar los impactos del cambio climático en diferentes regiones. 
-En cada ubicación se instalan dispositivos capaces de medir distintos 
-indicadores climáticos como temperatura, precipitación, calidad del aire, y
-humedad del suelo. Dependiendo de la región (costa, sierra y oriente), los 
-dispositivos pueden variar en capacidades y protocolos de recolección.
-
-Los datos recolectados deben almacenarse y analizarse periódicamente. Además, 
-ciertas ubicaciones requieren generar reportes personalizados que destaquen 
-riesgos ambientales como sequías, deslizamientos o contaminación del aire. 
-Algunos dispositivos pueden comportarse de forma especializada para detectar 
-únicamente ciertos tipos de indicadores dependiendo de la región (costa, sierra
-y oriente).
-
-Requisitos funcionales:
-Representar diferentes tipos de dispositivos y sus especializaciones, para la 
-costa, sierra y oriente.
-Implementar métodos polimórficos que permitan procesar los datos según los tipos
-de dispositivos y sus especializaciones, para la costa, sierra y oriente.
-Generar reportes dinámicos en función del tipo de riesgo ambiental detectado 
-según la región
+Problema01:En un juego de rol, se desea implementar un sistema de combate en el 
+que participen diferentes tipos de personajes: guerreros, magos y arqueros. Cada
+personaje tiene atributos y habilidades únicas, así como diferentes métodos de 
+ataque y defensa.
+El objetivo del juego es enfrentar a los personajes en batallas y determinar el 
+ganador en función de sus habilidades, estrategias y atributos. Los guerreros se
+destacan por su fuerza y habilidades cuerpo a cuerpo, los magos por sus hechizos
+y poderes mágicos, y los arqueros por su precisión y habilidades a distancia.
+El sistema debe permitir crear nuevos personajes de cada tipo, asignarles 
+atributos iniciales, como puntos de vida y nivel de experiencia, y permitirles 
+subir de nivel a medida que ganan batallas. Además, se debe implementar un 
+algoritmo de combate que evalúe las habilidades de cada personaje y determine 
+el resultado de la batalla.
+Utilizando programación orientada a objetos, herencia y polimorfismo, 
+implementa el sistema de combate y las clases necesarias para representar a 
+los diferentes tipos de personajes. Asegúrate de que cada tipo de personaje 
+tenga sus propias habilidades y métodos de ataque y defensa, y que puedan 
+interactuar entre sí en las batallas
 @autor: Ariel Torres
 @version: 1.0
  */
@@ -91,7 +88,7 @@ class Guerrero extends Personaje {
         Random ale = new Random();
 
         if (ale.nextBoolean()) {
-            vida++;
+            this.vida++;
             return true;
         }
 
@@ -128,11 +125,11 @@ class Mago extends Personaje {
 
         Random ale = new Random();
 
-        boolean gana = ale.nextInt(100) < 70; //70% de éxito
+        boolean gana = ale.nextInt(100) < 70;
 
         if (gana) {
             personaje.vida -= 2;
-            batallasGanadas++;
+            this.batallasGanadas++;
         } else {
             vida--;
             personaje.batallasGanadas++;
@@ -151,7 +148,7 @@ class Mago extends Personaje {
         Random ale = new Random();
 
         if (ale.nextBoolean()) {
-            vida += 2;
+            this.vida += 2;
             return true;
         }
 
@@ -183,7 +180,7 @@ class Arquero extends Personaje {
             return false;
         }
 
-        experiencia++;
+        this.experiencia++;
         personaje.experiencia++;
 
         Random ale = new Random();
@@ -192,9 +189,9 @@ class Arquero extends Personaje {
 
         if (gana) {
             personaje.vida -= precision;
-            batallasGanadas++;
+            this.batallasGanadas++;
         } else {
-            vida--;
+            this.vida--;
             personaje.batallasGanadas++;
         }
 
@@ -226,11 +223,7 @@ public class Problema_01_EjecutorBatalla {
 
     public static void main(String[] args) {
 
-        String hechizos[] = {
-            "Abracadabra",
-            "Bola de Fuego",
-            "Rayo"
-        };
+        String hechizos[] = {"Abracadabra","Bola de Fuego","Rayo"};
 
         Personaje guerrero = new Guerrero(5, 10);
         Personaje mago = new Mago(hechizos, 8);

@@ -219,7 +219,7 @@ class Cuenta {
         for (Menu m : menus) {
             subtotal += m.getValorMenu();
         }
-        iva = subtotal * 0.15;
+        iva = subtotal * 15/100;
         total = subtotal + iva;
 
     }
@@ -273,6 +273,6 @@ Plato: Arroz con pollo
 Valor menu: $5.1
 
 Subtotal: $35.05
-IVA: $5.257499999999999
+IVA: $5.2575
 TOTAL: $40.3075
  */

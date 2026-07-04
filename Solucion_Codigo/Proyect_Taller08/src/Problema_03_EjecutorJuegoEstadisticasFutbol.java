@@ -1,4 +1,19 @@
-
+/*
+Problema03:Se desea realizar una aplicación que permita a un periodista 
+deportivo llevar las estadísticas de los jugadores de un equipo de fútbol para 
+poder valorar su actuación en el partido.
+Cada jugador se identifica por su nombre, número de dorsal y Rut
+Los jugadores se dividen en tres categorías:
+Atacantes
+Defensores
+Porteros
+Para todos los jugadores se desea contabilizar el número de goles marcados, 
+además en el caso de los jugadores de campo se contabilizan los pases realizados
+con éxito y el número de balones recuperados. En el caso de los porteros se 
+contabilizan las atajadas realizadas.
+@autor: Ariel Torres
+@version: 1.0
+ */
 abstract class Jugador {
 
     protected String nombre;
@@ -111,3 +126,32 @@ public class Problema_03_EjecutorJuegoEstadisticasFutbol {
         }
     }
 }
+/*
+run:
+=== ATACANTE ===
+Nombre: Carlos
+Dorsal: 9
+RUT: 1101111111
+Goles: 2
+Valoracion: 84.0
+Pases exitosos: 35
+Recuperaciones: 8
+---------------------------
+=== DEFENSOR ===
+Nombre: Pedro
+Dorsal: 4
+RUT: 1102222222
+Goles: 1
+Valoracion: 78.0
+Pases exitosos: 40
+Recuperaciones: 12
+---------------------------
+=== PORTERO ===
+Nombre: Luis
+Dorsal: 1
+RUT: 1103333333
+Goles: 0
+Valoracion: 75.0
+Atajadas: 15
+---------------------------
+*/
